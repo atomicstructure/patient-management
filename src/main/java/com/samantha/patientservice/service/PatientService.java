@@ -1,22 +1,24 @@
 package com.samantha.patientservice.service;
 
 import com.samantha.patientservice.dto.PatientResponseDTO;
-import com.samantha.patientservice.model.Patient;
-import com.samantha.patientservice.repository.PatientRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 
-@Service
-public class PatientService {
-    private PatientRepository patientRepository;
+import java.util.Optional;
+import java.util.UUID;
 
-    public PatientService(PatientRepository patientRepository){
-        this.patientRepository = patientRepository;
-    }
 
-    public List<PatientResponseDTO> getPatients() {
-        List<Patient> patients = patientRepository.findAll();
-        return
-    }
+public interface PatientService {
+
+    Page<PatientResponseDTO> listPatients(String name, String address, String email, Integer pageNumber, Integer pageSize);
+
+    Optional<PatientResponseDTO> getPatientById(UUID id);
+
+    PatientResponseDTO saveNewPatient(PatientResponseDTO patient);
+
+    Optional<PatientResponseDTO> updatePatientById(UUID patientId, PatientResponseDTO patient);
+
+    boolean deleteById(UUID patientId);
+
+    void patchPatientById(UUID patientId, PatientResponseDTO patient);
 }
