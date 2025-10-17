@@ -13,6 +13,14 @@ public class PatientServiceImpl implements PatientService {
 
     public PatientServiceImpl() {
         this.patientMap = new HashMap<>();
+
+        // Sample data
+        PatientResponseDTO patient1 = PatientResponseDTO.builder()
+                .id(String.valueOf(UUID.randomUUID()))
+                .name("John Doe")
+                .email("johndoe@doe.com")
+                .build();
+        patientMap.put(UUID.fromString(patient1.getName()), patient1);
     }
 
 
