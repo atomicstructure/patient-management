@@ -1,15 +1,9 @@
 package com.samantha.patientservice.service;
 
 import com.samantha.patientservice.dto.PatientResponseDTO;
-import jakarta.persistence.Id;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -17,14 +11,14 @@ public class PatientServiceImpl implements PatientService {
 
     private Map<UUID, PatientResponseDTO> patientMap;
 
-//    public PatientServiceImpl(Map<UUID, PatientResponseDTO> patientMap) {
-//        this.patientMap = patientMap;
-//    }
+    public PatientServiceImpl() {
+        this.patientMap = new HashMap<>();
+    }
 
 
     @Override
-    public Page<PatientResponseDTO> listPatients(String name, String address, String email, Integer pageNumber, Integer pageSize) {
-        return new PageImpl<>(new ArrayList<>(patientMap.values()));
+    public List<PatientResponseDTO> listPatients(String name, String address, String email, Integer pageNumber, Integer pageSize) {
+        return new ArrayList<>(patientMap.values());
     }
 
     @Override

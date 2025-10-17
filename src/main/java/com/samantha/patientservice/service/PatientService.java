@@ -4,13 +4,14 @@ import com.samantha.patientservice.dto.PatientResponseDTO;
 import org.springframework.data.domain.Page;
 
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 
 public interface PatientService {
 
-    Page<PatientResponseDTO> listPatients(String name, String address, String email, Integer pageNumber, Integer pageSize);
+    List<PatientResponseDTO> listPatients(String name, String address, String email, Integer pageNumber, Integer pageSize);
 
     Optional<PatientResponseDTO> getPatientById(UUID id);
 
