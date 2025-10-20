@@ -26,9 +26,10 @@ public class Patient {
     @NotNull
     private String name;
 
-    @NotNull
+
     @Email
     @Column(unique = true)
+    @NotNull
     private String email;
 
     @NotNull

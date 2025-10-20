@@ -2,6 +2,7 @@ package com.samantha.patientservice.service;
 
 
 import com.samantha.patientservice.dto.PatientResponseDTO;
+import com.samantha.patientservice.exception.EmailAlreadyExistsException;
 import com.samantha.patientservice.mappers.PatientMapper;
 import com.samantha.patientservice.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,9 @@ public class PatientServiceJPA implements PatientService{
 
     @Override
     public PatientResponseDTO saveNewPatient(PatientResponseDTO patient) {
+        if (patientRepository.existsByEmail(patient.getEmail())) {
+            throw new EmailAlreadyExistsException("Email already exists: " + patient.getEmail());
+        }
         return patientMapper.patientToPatientResponseDTO(patientRepository.save(patientMapper.patientResponseDTOToPatient(patient)));
     }
 

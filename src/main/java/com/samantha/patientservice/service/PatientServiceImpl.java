@@ -1,6 +1,7 @@
 package com.samantha.patientservice.service;
 
 import com.samantha.patientservice.dto.PatientResponseDTO;
+import com.samantha.patientservice.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
