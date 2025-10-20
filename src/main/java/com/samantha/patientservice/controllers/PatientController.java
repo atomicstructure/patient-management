@@ -5,6 +5,7 @@ import com.samantha.patientservice.dto.PatientResponseDTO;
 import com.samantha.patientservice.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +17,19 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-public class PatientContoller {
+public class PatientController {
 
-    public static final String PATIENT_PATH = "/api/v1/patient";
-    public static final String PATIENT_ID_PATH = "/api/v1/patient/{patientId}";
+    public static final String PATIENT_PATH = "/api/v1/patients";
+    public static final String PATIENT_ID_PATH = "/api/v1/patients/{patientId}";
 
     private final PatientService patientService;
 
     @GetMapping(value = PATIENT_PATH)
     public List<PatientResponseDTO> listPatients(@RequestParam(required = false) String name,
                                                  @RequestParam(required = false) String address,
-                                                 @RequestParam(required = false) String email,
-                                                 @RequestParam(required = false) Integer pageNumber,
-                                                 @RequestParam(required = false) Integer pageSize){
-        return patientService.listPatients(name, address, email, pageNumber, pageSize);
+                                                 @RequestParam(required = false) String email
+                                                 ){
+        return patientService.listPatients(name, address, email);
     }
 
     @GetMapping(value = PATIENT_ID_PATH)

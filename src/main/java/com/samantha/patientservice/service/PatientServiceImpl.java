@@ -9,23 +9,23 @@ import java.util.*;
 @Service
 public class PatientServiceImpl implements PatientService {
 
-    private Map<UUID, PatientResponseDTO> patientMap;
+    private Map<UUID, PatientResponseDTO> patientMap = new HashMap<>();
 
-    public PatientServiceImpl() {
-        this.patientMap = new HashMap<>();
-
-        // Sample data
-        PatientResponseDTO patient1 = PatientResponseDTO.builder()
-                .id(String.valueOf(UUID.randomUUID()))
-                .name("John Doe")
-                .email("johndoe@doe.com")
-                .build();
-        patientMap.put(UUID.fromString(patient1.getName()), patient1);
-    }
+//    public PatientServiceImpl() {
+//        this.patientMap = new HashMap<>();
+//
+//        // Sample data
+//        PatientResponseDTO patient1 = PatientResponseDTO.builder()
+//                .id(String.valueOf(UUID.randomUUID()))
+//                .name("John Doe")
+//                .email("johndoe@doe.com")
+//                .build();
+//        patientMap.put(UUID.fromString(patient1.getName()), patient1);
+//    }
 
 
     @Override
-    public List<PatientResponseDTO> listPatients(String name, String address, String email, Integer pageNumber, Integer pageSize) {
+    public List<PatientResponseDTO> listPatients(String name, String address, String email) {
         return new ArrayList<>(patientMap.values());
     }
 
