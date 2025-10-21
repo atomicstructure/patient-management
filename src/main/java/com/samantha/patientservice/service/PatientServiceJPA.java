@@ -25,7 +25,7 @@ public class PatientServiceJPA implements PatientService{
 
 
     @Override
-    public List<PatientResponseDTO> listPatients(String name, String address, String email) {
+    public List<PatientResponseDTO> listPatients() {
         return patientRepository.findAll()
                 .stream()
                 .map(patientMapper::patientToPatientResponseDTO)

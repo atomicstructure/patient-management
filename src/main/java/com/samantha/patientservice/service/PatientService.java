@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface PatientService {
 
-    List<PatientResponseDTO> listPatients(String name, String address, String email);
+    List<PatientResponseDTO> listPatients();
 
     Optional<PatientResponseDTO> getPatientById(UUID id);
 
