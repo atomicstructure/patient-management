@@ -1,7 +1,9 @@
 package com.samantha.patientservice.controllers;
 
 
+import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
+import com.samantha.patientservice.dto.validators.CreatePatientValidationGroup;
 import com.samantha.patientservice.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +21,7 @@ import java.util.UUID;
 public class PatientController {
 
     public static final String PATIENT_PATH = "/api/v1/patients";
-    public static final String PATIENT_ID_PATH = "/{patientId}";
+    public static final String PATIENT_ID_PATH = PATIENT_PATH + "/{patientId}";
 
     private final PatientService patientService;
 
@@ -34,7 +36,7 @@ public class PatientController {
     }
 
     @PostMapping(value = PATIENT_PATH, consumes = "application/json")
-    public ResponseEntity handlePost(@Validated @RequestBody PatientResponseDTO patient) {
+    public ResponseEntity handlePost(@Validated @RequestBody PatientRequestDTO patient) {
         PatientResponseDTO savedPatient = patientService.saveNewPatient(patient);
 
         HttpHeaders headers = new HttpHeaders();

@@ -1,7 +1,7 @@
 package com.samantha.patientservice.service;
 
+import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
-import com.samantha.patientservice.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -40,7 +40,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientResponseDTO saveNewPatient(PatientResponseDTO patient) {
+    public PatientResponseDTO saveNewPatient(PatientRequestDTO patient) {
         PatientResponseDTO savedPatient = PatientResponseDTO.builder()
                 .id(String.valueOf(UUID.randomUUID()))
                 .name(patient.getName())

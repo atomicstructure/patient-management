@@ -1,5 +1,6 @@
 package com.samantha.patientservice.service;
 
+import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
 
 
@@ -14,7 +15,7 @@ public interface PatientService {
 
     Optional<PatientResponseDTO> getPatientById(UUID id);
 
-    PatientResponseDTO saveNewPatient(PatientResponseDTO patient);
+    PatientResponseDTO saveNewPatient(PatientRequestDTO patient);
 
     Optional<PatientResponseDTO> updatePatientById(UUID patientId, PatientResponseDTO patient);
 

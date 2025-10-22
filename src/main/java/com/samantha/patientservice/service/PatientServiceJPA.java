@@ -1,9 +1,11 @@
 package com.samantha.patientservice.service;
 
 
+import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
 import com.samantha.patientservice.exception.EmailAlreadyExistsException;
 import com.samantha.patientservice.mappers.PatientMapper;
+import com.samantha.patientservice.model.Patient;
 import com.samantha.patientservice.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -39,11 +41,19 @@ public class PatientServiceJPA implements PatientService{
     }
 
     @Override
-    public PatientResponseDTO saveNewPatient(PatientResponseDTO patient) {
+    public PatientResponseDTO saveNewPatient(PatientRequestDTO patient) {
         if (patientRepository.existsByEmail(patient.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists: " + patient.getEmail());
         }
-        return patientMapper.patientToPatientResponseDTO(patientRepository.save(patientMapper.patientResponseDTOToPatient(patient)));
+        // 1. Map DTO to Entity (registeredDate will be null or ignored by mapper)
+        Patient patientEntity = patientMapper.patientResponseDTOToPatient(patient);
+
+        // 2. IMPORTANT: Set the server-side generated registeredDate before saving.
+        // This satisfies the @NotNull constraint in Patient.java.
+        patientEntity.setRegisteredDate(LocalDate.now());
+
+        // 3. Save the completed entity
+        return patientMapper.patientToPatientResponseDTO(patientRepository.save(patientEntity));
     }
 
     @Override
@@ -55,7 +65,7 @@ public class PatientServiceJPA implements PatientService{
             patientEntity.setName(patient.getName());
             patientEntity.setAddress(patient.getAddress());
             patientEntity.setEmail(patient.getEmail());
-            patientEntity.setRegisteredDate(LocalDate.parse(patient.getRegisteredDate()));
+            patientEntity.setRegisteredDate(LocalDate.now());
             patientEntity.setDateOfBirth(LocalDate.parse(patient.getDateOfBirth()));
             atomicReference.set(Optional.of(patientMapper
                     .patientToPatientResponseDTO(patientRepository.save(patientEntity))));
