@@ -1,6 +1,8 @@
 package com.samantha.patientservice.exception;
 
+import com.samantha.patientservice.controllers.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,5 +37,17 @@ public class GlobalExceptionHandler {
         errors.put("email", ex.getMessage());
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNotFoundException(NotFoundException ex) {
+        Map<String, String> errors = new HashMap<>();
+        String message = (ex.getMessage() != null && !ex.getMessage().isEmpty())
+                ? ex.getMessage()
+                : "The requested patient record was not found.";
+
+        errors.put("error", message);
+        log.warn("Patient not found: {}", message);
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 }
