@@ -5,6 +5,7 @@ import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
 import com.samantha.patientservice.dto.validators.CreatePatientValidationGroup;
 import com.samantha.patientservice.service.PatientService;
+import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class PatientController {
     }
 
     @PostMapping(value = PATIENT_PATH, consumes = "application/json")
-    public ResponseEntity handlePost(@Validated @RequestBody PatientRequestDTO patient) {
+    public ResponseEntity handlePost(@Validated({Default.class}) @RequestBody PatientRequestDTO patient) {
         PatientResponseDTO savedPatient = patientService.saveNewPatient(patient);
 
         HttpHeaders headers = new HttpHeaders();
@@ -45,7 +46,7 @@ public class PatientController {
     }
 
     @PutMapping(value = PATIENT_ID_PATH, consumes = "application/json")
-    public ResponseEntity updatePatientById(@PathVariable("patientId") UUID patientId, @Validated @RequestBody PatientResponseDTO patient){
+    public ResponseEntity updatePatientById(@Validated({Default.class, CreatePatientValidationGroup.class})@PathVariable("patientId") UUID patientId, @Validated @RequestBody PatientRequestDTO patient){
 
         if (patientService.updatePatientById(patientId, patient).isEmpty())
             throw new NotFoundException();
@@ -54,7 +55,7 @@ public class PatientController {
     }
 
     @PatchMapping(path = PATIENT_ID_PATH, consumes = "application/json")
-    public ResponseEntity patchPatientById(@PathVariable("patientId") UUID patientId,@Validated @RequestBody PatientResponseDTO patient) {
+    public ResponseEntity patchPatientById(@PathVariable("patientId") UUID patientId,@Validated @RequestBody PatientRequestDTO patient) {
         patientService.patchPatientById(patientId, patient);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

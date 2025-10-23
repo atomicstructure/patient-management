@@ -4,7 +4,6 @@ package com.samantha.patientservice.service;
 import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
 import com.samantha.patientservice.exception.EmailAlreadyExistsException;
-import com.samantha.patientservice.exception.PatientNotFoundException;
 import com.samantha.patientservice.mappers.PatientMapper;
 import com.samantha.patientservice.model.Patient;
 import com.samantha.patientservice.repository.PatientRepository;
@@ -58,7 +57,7 @@ public class PatientServiceJPA implements PatientService{
     }
 
     @Override
-    public Optional<PatientResponseDTO> updatePatientById(UUID patientId, PatientResponseDTO patient) {
+    public Optional<PatientResponseDTO> updatePatientById(UUID patientId, PatientRequestDTO patient) {
 
         AtomicReference<Optional<PatientResponseDTO>> atomicReference = new AtomicReference<>();
 
@@ -66,7 +65,6 @@ public class PatientServiceJPA implements PatientService{
             patientEntity.setName(patient.getName());
             patientEntity.setAddress(patient.getAddress());
             patientEntity.setEmail(patient.getEmail());
-            patientEntity.setRegisteredDate(LocalDate.now());
             patientEntity.setDateOfBirth(LocalDate.parse(patient.getDateOfBirth()));
             atomicReference.set(Optional.of(patientMapper
                     .patientToPatientResponseDTO(patientRepository.save(patientEntity))));
@@ -86,7 +84,7 @@ public class PatientServiceJPA implements PatientService{
     }
 
     @Override
-    public void patchPatientById(UUID patientId, PatientResponseDTO patient) {
+    public void patchPatientById(UUID patientId, PatientRequestDTO patient) {
 
     }
 }

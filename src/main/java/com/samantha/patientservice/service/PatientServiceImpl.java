@@ -54,7 +54,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Optional<PatientResponseDTO> updatePatientById(UUID patientId, PatientResponseDTO patient) {
+    public Optional<PatientResponseDTO> updatePatientById(UUID patientId, PatientRequestDTO patient) {
 
         PatientResponseDTO patientResponseDTO = patientMap.get(patientId);
         patientResponseDTO.setName(patient.getName());
@@ -70,7 +70,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void patchPatientById(UUID patientId, PatientResponseDTO patient) {
+    public void patchPatientById(UUID patientId, PatientRequestDTO patient) {
         PatientResponseDTO existingPatient = patientMap.get(patientId);
 
         boolean updated = false;
