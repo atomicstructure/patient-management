@@ -1,0 +1,5 @@
+create table patient (date_of_birth date not null, registered_date date not null, id uuid not null, address varchar(255) not null, email varchar(255) not null unique, name varchar(255) not null, primary key (id));
+create table patient (date_of_birth date not null, registered_date date not null, id uuid not null, address varchar(255) not null, email varchar(255) not null unique, name varchar(255) not null, primary key (id));
+create table patient (date_of_birth date not null, registered_date date not null, id uuid not null, address varchar(255) not null, email varchar(255) not null unique, name varchar(255) not null, primary key (id));
+create table patient (date_of_birth date not null, registered_date date not null, id uuid not null, address varchar(255) not null, email varchar(255) not null unique, name varchar(255) not null, primary key (id));
+create table patient (date_of_birth date not null, registered_date date not null, id uuid not null, address varchar(255) not null, email varchar(255) not null unique, name varchar(255) not null, primary key (id));

@@ -25,7 +25,12 @@ public class SpringSecConfig {
     @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/v3/api-docs**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                    authorize.requestMatchers(
+                                    "/v3/api-docs",       // Allows the main API definitions
+                                    "/v3/api-docs/**",    // Allows the swagger-config
+                                    "/swagger-ui/**",     // Allows the UI HTML/JS/CSS
+                                    "/swagger-ui.html"    // Allows the UI entry point
+                            ).permitAll()
                             .anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> {
