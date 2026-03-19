@@ -42,14 +42,14 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientResponseDTO saveNewPatient(PatientRequestDTO patient) {
         PatientResponseDTO savedPatient = PatientResponseDTO.builder()
-                .id(String.valueOf(UUID.randomUUID()))
+                .id(UUID.randomUUID())
                 .name(patient.getName())
                 .email(patient.getEmail())
                 .address(patient.getAddress())
                 .dateOfBirth(patient.getDateOfBirth())
                 .registeredDate(patient.getRegisteredDate())
                 .build();
-        patientMap.put(UUID.fromString(savedPatient.getId()), savedPatient);
+        patientMap.put(savedPatient.getId(), savedPatient);
         return savedPatient;
     }
 

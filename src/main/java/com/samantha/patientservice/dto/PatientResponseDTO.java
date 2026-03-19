@@ -4,12 +4,14 @@ package com.samantha.patientservice.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.UUID;
+
 
 @Builder
 @Data
 public class PatientResponseDTO {
 
-    private String id;
+    private UUID id;
     private String name;
     private String email;
     private String address;

@@ -21,7 +21,7 @@ import java.util.UUID;
 @RestController
 public class PatientController {
 
-    public static final String PATIENT_PATH = "/api/v1/patients";
+    public static final String PATIENT_PATH = "/api/v4/patients";
     public static final String PATIENT_ID_PATH = PATIENT_PATH + "/{patientId}";
 
     private final PatientService patientService;
@@ -41,7 +41,7 @@ public class PatientController {
         PatientResponseDTO savedPatient = patientService.saveNewPatient(patient);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/patients/" + savedPatient.getId().toString());
+        headers.add("Location", "/api/v4/patients/" + savedPatient.getId().toString());
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
