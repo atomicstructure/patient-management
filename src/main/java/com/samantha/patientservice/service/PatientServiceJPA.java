@@ -4,6 +4,7 @@ package com.samantha.patientservice.service;
 import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
 import com.samantha.patientservice.exception.EmailAlreadyExistsException;
+import com.samantha.patientservice.grpc.BillingServiceGrpcClient;
 import com.samantha.patientservice.mappers.PatientMapper;
 import com.samantha.patientservice.model.Patient;
 import com.samantha.patientservice.repository.PatientRepository;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PatientServiceJPA implements PatientService{
     private final PatientRepository patientRepository;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
     private final PatientMapper patientMapper;
 
 
@@ -45,15 +47,23 @@ public class PatientServiceJPA implements PatientService{
         if (patientRepository.existsByEmail(patient.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists: " + patient.getEmail());
         }
-        // 1. Map DTO to Entity (registeredDate will be null or ignored by mapper)
-        Patient patientEntity = patientMapper.patientResponseDTOToPatient(patient);
 
-        // 2. IMPORTANT: Set the server-side generated registeredDate before saving.
-        // This satisfies the @NotNull constraint in Patient.java.
+        // 1. Map DTO to Entity and set the date
+        Patient patientEntity = patientMapper.patientResponseDTOToPatient(patient);
         patientEntity.setRegisteredDate(LocalDate.now());
 
-        // 3. Save the completed entity
-        return patientMapper.patientToPatientResponseDTO(patientRepository.save(patientEntity));
+        // 2. IMPORTANT: Save the entity FIRST so the database generates the UUID!
+        Patient savedPatient = patientRepository.save(patientEntity);
+
+        // 3. Now you can safely get the ID for the gRPC call
+        billingServiceGrpcClient.createBillingAccount(
+                savedPatient.getId().toString(),
+                savedPatient.getName(),
+                savedPatient.getEmail()
+        );
+
+        // 4. Map the saved entity to a DTO and return it
+        return patientMapper.patientToPatientResponseDTO(savedPatient);
     }
 
     @Override
