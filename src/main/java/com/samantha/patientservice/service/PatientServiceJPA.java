@@ -5,6 +5,7 @@ import com.samantha.patientservice.dto.PatientRequestDTO;
 import com.samantha.patientservice.dto.PatientResponseDTO;
 import com.samantha.patientservice.exception.EmailAlreadyExistsException;
 import com.samantha.patientservice.grpc.BillingServiceGrpcClient;
+import com.samantha.patientservice.kafka.KafkaProducer;
 import com.samantha.patientservice.mappers.PatientMapper;
 import com.samantha.patientservice.model.Patient;
 import com.samantha.patientservice.repository.PatientRepository;
@@ -26,6 +27,7 @@ public class PatientServiceJPA implements PatientService{
     private final PatientRepository patientRepository;
     private final BillingServiceGrpcClient billingServiceGrpcClient;
     private final PatientMapper patientMapper;
+    private final KafkaProducer kafkaProducer;
 
 
     @Override
@@ -62,6 +64,8 @@ public class PatientServiceJPA implements PatientService{
                 savedPatient.getEmail()
         );
 
+        // Send Kafka Producer Message
+        kafkaProducer.sendEvent(savedPatient);
         // 4. Map the saved entity to a DTO and return it
         return patientMapper.patientToPatientResponseDTO(savedPatient);
     }
