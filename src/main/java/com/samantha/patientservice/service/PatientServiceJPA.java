@@ -80,6 +80,17 @@ public class PatientServiceJPA implements PatientService{
             patientEntity.setAddress(patient.getAddress());
             patientEntity.setEmail(patient.getEmail());
             patientEntity.setDateOfBirth(LocalDate.parse(patient.getDateOfBirth()));
+
+            // 3. Now you can safely get the ID for the gRPC call
+            billingServiceGrpcClient.createBillingAccount(
+                    patientEntity.getId().toString(),
+                    patientEntity.getName(),
+                    patientEntity.getEmail()
+            );
+
+            // Send Kafka Producer Message
+            kafkaProducer.sendEvent(patientEntity);
+
             atomicReference.set(Optional.of(patientMapper
                     .patientToPatientResponseDTO(patientRepository.save(patientEntity))));
         }, () -> {
